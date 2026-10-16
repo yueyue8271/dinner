@@ -76,53 +76,41 @@
 
             <!-- 可伸縮面板 (Collapsible Filter Panel) -->
             <div id="filterCollapsiblePanel" class="transition-all duration-300 ease-in-out">
-                <!-- 第一層篩選列：營業狀態、距離範圍、價位級距 -->
-                <div class="mt-2.5 pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2">
+                <!-- 第一層篩選列：營業狀態、距離範圍、價位級距（同欄三等分並排） -->
+                <div class="mt-2.5 pt-2 border-t border-slate-100 grid grid-cols-3 gap-2">
                     <!-- 營業狀態 -->
-                    <div class="relative shrink-0">
-                        <select id="selectOpenStatus" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-semibold pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
-                            <option value="open" selected>🟢 目前營業中 (預設)</option>
-                            <option value="all">⚪ 不限營業狀態</option>
+                    <div class="relative">
+                        <select id="selectOpenStatus" onchange="applyFilters()" class="w-full appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-semibold pl-2.5 pr-5 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer text-center truncate">
+                            <option value="open" selected>營業中</option>
+                            <option value="closed">歇業中</option>
                         </select>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                     </div>
 
                     <!-- 距離範圍 -->
-                    <div class="relative shrink-0">
-                        <select id="selectDistance" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-medium pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
-                            <option value="600" selected>距離: 600m 內 (預設)</option>
-                            <option value="1200">1.2km 內</option>
-                            <option value="2000">2km 內</option>
-                            <option value="10000">10km 內 (全部基底)</option>
+                    <div class="relative">
+                        <select id="selectDistance" onchange="applyFilters()" class="w-full appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-semibold pl-2.5 pr-5 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer text-center truncate">
+                            <option value="600" selected>600m</option>
+                            <option value="1200">1.2k</option>
+                            <option value="2000">2k</option>
+                            <option value="10000">10k</option>
                         </select>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                     </div>
 
                     <!-- 價位篩選 -->
-                    <div class="relative shrink-0">
-                        <select id="selectPrice" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-medium pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
-                            <option value="all" selected>價位: 不限預算</option>
-                            <option value="1">$ 200 元以內</option>
-                            <option value="2">$$ 500 元以內</option>
-                            <option value="3">$$$ 超過 500 元</option>
+                    <div class="relative">
+                        <select id="selectPrice" onchange="applyFilters()" class="w-full appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-semibold pl-2.5 pr-5 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer text-center truncate">
+                            <option value="all" selected>不限</option>
+                            <option value="1">200內</option>
+                            <option value="2">500內</option>
+                            <option value="3">500以上</option>
                         </select>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                    </div>
-
-                    <button type="button" id="btnSearchFilters" onclick="onSearchButtonClick()" class="shrink-0 px-4 py-1.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs active:scale-95 transition cursor-pointer" title="套用營業／距離／價位條件並重新顯示店家"><i class="fa-solid fa-magnifying-glass text-[11px]"></i><span id="btnSearchLabel">搜尋</span></button>
-
-                    <div class="ml-auto flex items-center gap-2 text-xs">
-                        <button onclick="selectAllVisible(true)" class="text-orange-600 hover:text-orange-700 font-medium px-2 py-1 rounded hover:bg-orange-50 transition cursor-pointer">
-                            全選目前
-                        </button>
-                        <span class="text-slate-300">|</span>
-                        <button onclick="selectAllVisible(false)" class="text-slate-500 hover:text-slate-700 font-medium px-2 py-1 rounded hover:bg-slate-100 transition cursor-pointer">
-                            清除重選
-                        </button>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                     </div>
                 </div>
 
-                <!-- 關鍵字搜尋列 -->
+                <!-- 關鍵字搜尋列與搜尋按鈕 -->
                 <div class="mt-2.5 flex items-center gap-2">
                     <div class="relative flex-1">
                         <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none"></i>
@@ -131,6 +119,7 @@
                             <i class="fa-solid fa-circle-xmark"></i>
                         </button>
                     </div>
+                    <button type="button" id="btnSearchFilters" onclick="onSearchButtonClick()" class="shrink-0 px-4 py-1.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs active:scale-95 transition cursor-pointer" title="套用篩選並重新搜尋"><i class="fa-solid fa-magnifying-glass text-[11px]"></i><span id="btnSearchLabel">搜尋</span></button>
                 </div>
 
                 <!-- 第二層篩選：餐點類型標籤與細項下拉選單 (Filter Chips & Dropdowns) -->
@@ -173,10 +162,17 @@
                     <p class="text-xs text-slate-600 mt-0.5">勾選至少 2 家喜愛的餐廳，點擊開始轉盤抽籤解決選擇困難！</p>
                 </div>
             </div>
-            <button onclick="openRouletteModal()" id="btnStartSpinHeader" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-orange-500/25 active:scale-95 transition cursor-pointer">
-                <i class="fa-solid fa-dice text-base animate-pulse"></i>
-                <span>轉動晚餐轉盤</span>
-            </button>
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 text-xs text-slate-500 mr-1">
+                    <button type="button" onclick="selectAllVisible(true)" class="text-orange-600 hover:text-orange-700 font-bold hover:underline cursor-pointer">全選目前</button>
+                    <span>|</span>
+                    <button type="button" onclick="selectAllVisible(false)" class="text-slate-500 hover:text-slate-700 font-medium hover:underline cursor-pointer">清除重選</button>
+                </div>
+                <button onclick="openRouletteModal()" id="btnStartSpinHeader" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-orange-500/25 active:scale-95 transition cursor-pointer">
+                    <i class="fa-solid fa-dice text-base animate-pulse"></i>
+                    <span>轉動晚餐轉盤</span>
+                </button>
+            </div>
         </div>
 
         <!-- 餐廳列表 (雙欄響應式網格) -->
@@ -199,12 +195,19 @@
 
     <!-- 行動裝置底部懸浮轉盤啟動列 -->
     <div class="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-slate-200 z-30 md:hidden flex items-center justify-between gap-3 shadow-lg">
-        <div class="text-xs">
-            <span class="text-slate-500">已勾選</span>
-            <span id="mobileSelectedCount" class="font-bold text-orange-600 text-sm px-1">0</span>
-            <span class="text-slate-500">家候選餐廳</span>
+        <div class="text-xs flex flex-col justify-center">
+            <div class="flex items-center">
+                <span class="text-slate-500">已勾選</span>
+                <span id="mobileSelectedCount" class="font-bold text-orange-600 text-sm px-1">0</span>
+                <span class="text-slate-500">家候選餐廳</span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] mt-0.5">
+                <button type="button" onclick="selectAllVisible(true)" class="text-orange-600 hover:text-orange-700 font-bold active:scale-95 transition cursor-pointer">全選目前</button>
+                <span class="text-slate-300">|</span>
+                <button type="button" onclick="selectAllVisible(false)" class="text-slate-500 hover:text-slate-700 font-semibold active:scale-95 transition cursor-pointer">清除重選</button>
+            </div>
         </div>
-        <button onclick="openRouletteModal()" class="flex-1 max-w-xs py-2.5 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-orange-500/25 active:scale-95 transition">
+        <button onclick="openRouletteModal()" class="flex-1 max-w-[170px] sm:max-w-xs py-2.5 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-orange-500/25 active:scale-95 transition">
             <i class="fa-solid fa-dice animate-bounce"></i>
             <span>進入幸運轉盤</span>
         </button>
@@ -2083,6 +2086,7 @@
             // 篩選後一律依離家距離由近到遠排序 (距離相同再依評分高到低)
             const filteredList = restaurants.filter(r => {
                 if (openStatus === 'open' && !r.isOpen) return false;
+                if (openStatus === 'closed' && r.isOpen) return false;
                 const maxDist = (distanceLimit && distanceLimit !== 'all') ? parseInt(distanceLimit) : 10000;
                 if (r.distance > maxDist) return false;
                 if (priceLevel !== 'all') {
@@ -2141,15 +2145,17 @@
             const summaryDisplay = document.getElementById('filterResultConditionSummary');
             if (summaryDisplay) {
                 const distNum = parseInt(committedFilters.distance);
-                const distLabel = committedFilters.distance === '10000' ? '10km 內' : (distNum >= 1000 ? (distNum / 1000) + 'km 內' : distNum + 'm 內');
-                const openLabel = committedFilters.openStatus === 'open' ? '🟢 目前營業中' : '⚪ 不限營業狀態';
+                const distLabel = committedFilters.distance === '10000' ? '10k 內' : (distNum >= 1000 ? (distNum / 1000) + 'k 內' : distNum + 'm 內');
+                const openLabel = committedFilters.openStatus === 'open' ? '🟢 營業中' : (committedFilters.openStatus === 'closed' ? '🔴 歇業中' : '⚪ 不限');
+                const priceMap = { 'all': '', '1': '200內', '2': '500內', '3': '500以上' };
+                const priceLabel = priceMap[committedFilters.price] ? ` · ${priceMap[committedFilters.price]}` : '';
                 const catDef = CATEGORY_DEFINITIONS.find(c => c.category === activeCategory);
                 let catLabel = '全部類別';
                 if (activeCategory !== 'all') {
                     const baseLabel = catDef ? (catDef.shortLabel || catDef.category) : activeCategory;
                     catLabel = activeSubCategory !== 'all' ? `${baseLabel} (${activeSubCategory})` : baseLabel;
                 }
-                summaryDisplay.textContent = `條件：${distLabel} · ${openLabel} · ${catLabel}`;
+                summaryDisplay.textContent = `條件：${distLabel} · ${openLabel}${priceLabel} · ${catLabel}`;
             }
 
             if (filtered.length === 0) {
