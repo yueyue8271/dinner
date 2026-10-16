@@ -45,105 +45,125 @@
 
     <!-- 頂部導航與定位中心 Header -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-        <div class="max-w-6xl mx-auto px-4 py-3">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div class="max-w-6xl mx-auto px-4 py-2.5">
+            <!-- 頂部標題列與伸縮開關按鈕 -->
+            <div class="flex items-center justify-between gap-2">
                 <!-- 標題與定位 -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
-                        <i class="fa-solid fa-utensils text-lg"></i>
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
+                        <i class="fa-solid fa-utensils text-base sm:text-lg"></i>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="text-lg font-bold text-slate-900 tracking-tight">晚餐吃什麼？</h1>
-                            <span class="text-[11px] font-semibold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">新竹民富里經國路雷達</span>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5 sm:gap-2">
+                            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight truncate">晚餐吃什麼？</h1>
+                            <span class="hidden sm:inline-block text-[11px] font-semibold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full shrink-0">新竹民富里經國路雷達</span>
                         </div>
-                        <p class="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
-                            <i class="fa-solid fa-location-dot text-rose-500"></i>
-                            <span class="truncate font-medium">新竹市北區民富里經國路二段</span>
+                        <p class="text-[11px] sm:text-xs text-slate-500 flex items-center gap-1.5 mt-0.5 truncate">
+                            <i class="fa-solid fa-location-dot text-rose-500 shrink-0"></i>
+                            <span class="truncate font-medium">經國路二段</span>
                             <span class="text-slate-300">|</span>
-                            <span class="text-emerald-600 font-semibold" id="activeCountBadge">載入中...</span>
+                            <span class="text-emerald-600 font-semibold shrink-0" id="activeCountBadge">載入中...</span>
                         </p>
                     </div>
                 </div>
+
+                <!-- 伸縮開關按鈕 (手機版可點擊收合/展開) -->
+                <button type="button" id="btnToggleFilters" onclick="toggleFilterCollapse()" class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 hover:bg-orange-100 text-orange-600 font-bold text-xs border border-orange-200 shadow-xs transition active:scale-95 cursor-pointer" title="切換展開或收合篩選欄">
+                    <i id="toggleFilterIcon" class="fa-solid fa-chevron-up text-[11px] transition-transform duration-200"></i>
+                    <span id="toggleFilterLabel">收合篩選</span>
+                </button>
             </div>
 
-            <!-- 第一層篩選列：營業狀態、距離範圍、價位級距 -->
-            <div class="mt-3 pt-2.5 border-t border-slate-100 flex flex-wrap items-center gap-2">
-                <!-- 營業狀態 -->
-                <div class="relative shrink-0">
-                    <select id="selectOpenStatus" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-semibold pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
-                        <option value="open" selected>🟢 目前營業中 (預設)</option>
-                        <option value="all">⚪ 不限營業狀態</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+            <!-- 可伸縮面板 (Collapsible Filter Panel) -->
+            <div id="filterCollapsiblePanel" class="transition-all duration-300 ease-in-out">
+                <!-- 第一層篩選列：營業狀態、距離範圍、價位級距 -->
+                <div class="mt-2.5 pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2">
+                    <!-- 營業狀態 -->
+                    <div class="relative shrink-0">
+                        <select id="selectOpenStatus" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-semibold pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
+                            <option value="open" selected>🟢 目前營業中 (預設)</option>
+                            <option value="all">⚪ 不限營業狀態</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+
+                    <!-- 距離範圍 -->
+                    <div class="relative shrink-0">
+                        <select id="selectDistance" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-medium pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
+                            <option value="600" selected>距離: 600m 內 (預設)</option>
+                            <option value="1200">1.2km 內</option>
+                            <option value="2000">2km 內</option>
+                            <option value="10000">10km 內 (全部基底)</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+
+                    <!-- 價位篩選 -->
+                    <div class="relative shrink-0">
+                        <select id="selectPrice" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-medium pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
+                            <option value="all" selected>價位: 不限預算</option>
+                            <option value="1">$ 200 元以內</option>
+                            <option value="2">$$ 500 元以內</option>
+                            <option value="3">$$$ 超過 500 元</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+
+                    <button type="button" id="btnSearchFilters" onclick="onSearchButtonClick()" class="shrink-0 px-4 py-1.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs active:scale-95 transition cursor-pointer" title="套用營業／距離／價位條件並重新顯示店家"><i class="fa-solid fa-magnifying-glass text-[11px]"></i><span id="btnSearchLabel">搜尋</span></button>
+
+                    <div class="ml-auto flex items-center gap-2 text-xs">
+                        <button onclick="selectAllVisible(true)" class="text-orange-600 hover:text-orange-700 font-medium px-2 py-1 rounded hover:bg-orange-50 transition cursor-pointer">
+                            全選目前
+                        </button>
+                        <span class="text-slate-300">|</span>
+                        <button onclick="selectAllVisible(false)" class="text-slate-500 hover:text-slate-700 font-medium px-2 py-1 rounded hover:bg-slate-100 transition cursor-pointer">
+                            清除重選
+                        </button>
+                    </div>
                 </div>
 
-                <!-- 距離範圍 -->
-                <div class="relative shrink-0">
-                    <select id="selectDistance" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-medium pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
-                        <option value="600" selected>距離: 600m 內 (預設)</option>
-                        <option value="1200">1.2km 內</option>
-                        <option value="2000">2km 內</option>
-                        <option value="10000">10km 內 (全部基底)</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <!-- 關鍵字搜尋列 -->
+                <div class="mt-2.5 flex items-center gap-2">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none"></i>
+                        <input type="text" id="quickSearchInput" oninput="applyFilters()" onkeydown="handleSearchKeydown(event)" placeholder="搜尋店家名稱、料理種類或地址 (例: 雞排、拉麵、便當)..." class="w-full bg-slate-100 hover:bg-slate-200/60 focus:bg-white text-xs text-slate-800 pl-8 pr-8 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 focus:ring-1 focus:ring-orange-400 transition placeholder:text-slate-400">
+                        <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- 價位篩選 -->
-                <div class="relative shrink-0">
-                    <select id="selectPrice" onchange="applyFilters()" class="appearance-none bg-slate-100 hover:bg-slate-200/70 text-slate-700 text-xs font-medium pl-3 pr-7 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 cursor-pointer">
-                        <option value="all" selected>價位: 不限預算</option>
-                        <option value="1">$ 200 元以內</option>
-                        <option value="2">$$ 500 元以內</option>
-                        <option value="3">$$$ 超過 500 元</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <!-- 第二層篩選：餐點類型標籤與細項下拉選單 (Filter Chips & Dropdowns) -->
+                <div class="mt-2.5 flex flex-wrap items-center gap-2 pb-1 relative" id="categoryChips">
+                    <!-- 動態注入分類標籤與細項下拉選單 -->
                 </div>
 
-                <button type="button" id="btnSearchFilters" onclick="applyFilters()" class="shrink-0 px-4 py-1.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs active:scale-95 transition cursor-pointer" title="套用營業／距離／價位條件並重新顯示店家"><i class="fa-solid fa-magnifying-glass text-[11px]"></i><span id="btnSearchLabel">搜尋</span></button>
-
-                <div class="ml-auto flex items-center gap-2 text-xs">
-                    <button onclick="selectAllVisible(true)" class="text-orange-600 hover:text-orange-700 font-medium px-2 py-1 rounded hover:bg-orange-50 transition cursor-pointer">
-                        全選目前
+                <!-- 手機版面板內收合快捷按鈕 -->
+                <div class="flex justify-center pt-1.5 pb-0.5 sm:hidden">
+                    <button type="button" onclick="toggleFilterCollapse()" class="text-[11px] text-slate-500 hover:text-slate-700 py-1 px-4 rounded-full bg-slate-100 hover:bg-slate-200 font-medium transition cursor-pointer">
+                        <i class="fa-solid fa-chevron-up mr-1 text-[10px]"></i>收合選單
                     </button>
-                    <span class="text-slate-300">|</span>
-                    <button onclick="selectAllVisible(false)" class="text-slate-500 hover:text-slate-700 font-medium px-2 py-1 rounded hover:bg-slate-100 transition cursor-pointer">
-                        清除重選
-                    </button>
                 </div>
             </div>
 
-            <!-- 關鍵字搜尋列 -->
-            <div class="mt-2.5 flex items-center gap-2">
-                <div class="relative flex-1">
-                    <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none"></i>
-                    <input type="text" id="quickSearchInput" oninput="applyFilters()" onkeydown="handleSearchKeydown(event)" placeholder="搜尋店家名稱、料理種類或地址 (例: 雞排、拉麵、便當)..." class="w-full bg-slate-100 hover:bg-slate-200/60 focus:bg-white text-xs text-slate-800 pl-8 pr-8 py-1.5 rounded-full border border-slate-200 focus:outline-none focus:border-orange-400 focus:ring-1 focus:ring-orange-400 transition placeholder:text-slate-400">
-                    <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer">
-                        <i class="fa-solid fa-circle-xmark"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 第二層篩選：餐點類型標籤與細項下拉選單 (Filter Chips & Dropdowns) -->
-            <div class="mt-2.5 flex flex-wrap items-center gap-2 pb-1 relative" id="categoryChips">
-                <!-- 動態注入分類標籤與細項下拉選單 -->
-            </div>
-
-            <!-- 篩選結果統計資訊列 -->
-            <div id="filterResultCountBar" class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
-                <div class="flex items-center gap-2">
+            <!-- 篩選結果統計資訊列（可點擊快速切換展開/收合） -->
+            <div id="filterResultCountBar" onclick="toggleFilterCollapse()" class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 cursor-pointer select-none hover:text-slate-800 transition" title="點擊切換篩選欄展開/收合">
+                <div class="flex items-center gap-2 shrink-0">
                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange-100 text-orange-600 text-[11px]"><i class="fa-solid fa-store"></i></span>
-                    <span>目前篩選出 <strong id="filterResultCountDisplay" class="text-orange-600 font-bold text-sm">0</strong> 家店家</span>
+                    <span>篩選出 <strong id="filterResultCountDisplay" class="text-orange-600 font-bold text-sm">0</strong> 間</span>
                 </div>
-                <div id="filterResultConditionSummary" class="text-[11px] text-slate-400 font-medium"></div>
+                <div class="flex items-center gap-1.5 min-w-0">
+                    <div id="filterResultConditionSummary" class="text-[11px] text-slate-400 font-medium truncate max-w-[170px] sm:max-w-none"></div>
+                    <span id="filterExpandHint" class="text-[11px] text-orange-600 font-semibold shrink-0">展開 ▾</span>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- 主要內容區 -->
     <main class="max-w-6xl mx-auto px-4 py-5 flex-1 w-full">
-        <!-- 統計與轉盤呼喚條 (桌面版頂部快速欄) -->
-        <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-4 mb-5 border border-orange-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        <!-- 統計與轉盤呼喚條 (桌面版頂部快速欄；手機版隱藏，改由底部懸浮列啟動避免佔據空間) -->
+        <div class="hidden md:flex bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-4 mb-5 border border-orange-200/60 items-center justify-between gap-3 shadow-xs">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center text-lg font-black shadow-inner">
                     <span id="selectedCountDisplay">0</span>
@@ -1826,16 +1846,45 @@
                 // 展開之細項下拉選單 (Dropdown Menu)
                 if (isOpen) {
                     const menu = document.createElement('div');
-                    menu.className = 'absolute left-0 top-full mt-1.5 z-50 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-1.5 min-w-[210px] animate-in fade-in zoom-in-95 duration-150';
+                    menu.className = 'absolute left-0 top-full mt-1.5 z-50 bg-white rounded-2xl shadow-2xl border border-slate-200/90 min-w-[215px] max-w-[280px] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150';
                     
-                    // 下拉標頭
+                    // 下拉標頭 (固定頂部)
                     const header = document.createElement('div');
-                    header.className = 'px-3.5 py-1.5 text-[11px] font-bold text-slate-400 border-b border-slate-100 flex items-center justify-between';
+                    header.className = 'px-3.5 py-2 text-[11px] font-bold text-slate-400 border-b border-slate-100 flex items-center justify-between shrink-0 bg-slate-50/90';
                     header.innerHTML = `
                         <span>${def.shortLabel} 細項選擇</span>
                         <i class="fa-solid fa-list-check text-slate-300"></i>
                     `;
                     menu.appendChild(header);
+
+                    // 滾動內容容器 (防止選單太長被手機螢幕或底部工具列擋住)
+                    const listContainer = document.createElement('div');
+                    listContainer.className = 'overflow-y-auto overscroll-contain flex-1 py-1 divide-y divide-slate-50';
+
+                    // "全選" 選項放置於頂部，方便快速切換整類
+                    const isAllSubActive = (isCatActive && activeSubCategory === 'all');
+                    const allSubBtn = document.createElement('button');
+                    allSubBtn.type = 'button';
+                    allSubBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        selectCategoryOption(cat, 'all');
+                    };
+                    allSubBtn.className = `w-full text-left px-3.5 py-2 text-xs font-bold flex items-center justify-between transition cursor-pointer ${
+                        isAllSubActive 
+                        ? 'bg-orange-50 text-orange-600' 
+                        : 'text-slate-800 hover:bg-slate-50'
+                    }`;
+                    allSubBtn.innerHTML = `
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-layer-group text-orange-500 text-[11px]"></i>
+                            <span>全選 (全部${def.shortLabel})</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0 ml-2">
+                            <span class="text-[10px] ${isAllSubActive ? 'text-orange-500' : 'text-slate-400'}">(${totalCatCount})</span>
+                            ${isAllSubActive ? '<i class="fa-solid fa-check text-orange-500 text-xs"></i>' : ''}
+                        </div>
+                    `;
+                    listContainer.appendChild(allSubBtn);
 
                     // 細項列表 (便當／自助餐, 台灣小吃...)
                     def.subCategories.forEach(sub => {
@@ -1864,40 +1913,38 @@
                                 ${isSubActive ? '<i class="fa-solid fa-check text-orange-500 text-xs"></i>' : ''}
                             </div>
                         `;
-                        menu.appendChild(itemBtn);
+                        listContainer.appendChild(itemBtn);
                     });
 
-                    // 分隔線
-                    const divider = document.createElement('div');
-                    divider.className = 'h-px bg-slate-100 my-1';
-                    menu.appendChild(divider);
-
-                    // "全選" 選項 (顯示此大類全部店家)
-                    const isAllSubActive = (isCatActive && activeSubCategory === 'all');
-                    const allSubBtn = document.createElement('button');
-                    allSubBtn.type = 'button';
-                    allSubBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        selectCategoryOption(cat, 'all');
-                    };
-                    allSubBtn.className = `w-full text-left px-3.5 py-2 text-xs font-bold flex items-center justify-between transition cursor-pointer ${
-                        isAllSubActive 
-                        ? 'bg-orange-50 text-orange-600' 
-                        : 'text-slate-800 hover:bg-slate-50'
-                    }`;
-                    allSubBtn.innerHTML = `
-                        <div class="flex items-center gap-1.5">
-                            <i class="fa-solid fa-layer-group text-orange-500 text-[11px]"></i>
-                            <span>全選 (顯示全部${def.shortLabel})</span>
-                        </div>
-                        <div class="flex items-center gap-1.5 shrink-0 ml-2">
-                            <span class="text-[10px] ${isAllSubActive ? 'text-orange-500' : 'text-slate-400'}">(${totalCatCount})</span>
-                            ${isAllSubActive ? '<i class="fa-solid fa-check text-orange-500 text-xs"></i>' : ''}
-                        </div>
-                    `;
-                    menu.appendChild(allSubBtn);
-
+                    menu.appendChild(listContainer);
                     wrap.appendChild(menu);
+
+                    // 智慧邊界定位與高度限制：避免超出手機螢幕右邊緣或被底部懸浮列遮擋
+                    requestAnimationFrame(() => {
+                        const rect = menu.getBoundingClientRect();
+                        const viewportW = window.innerWidth;
+                        const viewportH = window.innerHeight;
+
+                        // 水平防溢出：若右側靠邊超出螢幕，切換為右對齊 (right-0)
+                        if (rect.right > viewportW - 8) {
+                            menu.classList.remove('left-0');
+                            menu.classList.add('right-0');
+                        }
+
+                        // 垂直防遮擋：扣除手機版底部懸浮列 (約 76px) 空間
+                        const bottomReserved = (viewportW < 768) ? 76 : 24;
+                        const spaceBelow = viewportH - rect.top - bottomReserved;
+
+                        if (spaceBelow < 220 && rect.top > 220) {
+                            // 下方空間不足且上方充足時，向上展開
+                            menu.classList.remove('top-full', 'mt-1.5');
+                            menu.classList.add('bottom-full', 'mb-1.5');
+                            const spaceAbove = rect.top - 16;
+                            menu.style.maxHeight = Math.min(340, Math.max(160, spaceAbove)) + 'px';
+                        } else {
+                            menu.style.maxHeight = Math.min(340, Math.max(160, spaceBelow)) + 'px';
+                        }
+                    });
                 }
 
                 container.appendChild(wrap);
@@ -1946,12 +1993,57 @@
             }
         }
 
+        // 篩選欄伸縮狀態控制 (手機版優化，避免擋住下方店家)
+        let isFilterCollapsed = false;
+
+        function setFilterCollapsed(collapsed) {
+            isFilterCollapsed = !!collapsed;
+            const panel = document.getElementById('filterCollapsiblePanel');
+            const icon = document.getElementById('toggleFilterIcon');
+            const label = document.getElementById('toggleFilterLabel');
+            const hint = document.getElementById('filterExpandHint');
+
+            if (!panel) return;
+
+            if (isFilterCollapsed) {
+                panel.classList.add('hidden');
+                if (icon) icon.className = 'fa-solid fa-chevron-down text-[11px] transition-transform duration-200';
+                if (label) label.textContent = '展開篩選';
+                if (hint) hint.classList.remove('hidden');
+            } else {
+                panel.classList.remove('hidden');
+                if (icon) icon.className = 'fa-solid fa-chevron-up text-[11px] transition-transform duration-200';
+                if (label) label.textContent = '收合篩選';
+                if (hint) hint.classList.add('hidden');
+            }
+
+            try {
+                localStorage.setItem('DINNER_FILTER_COLLAPSED', isFilterCollapsed ? '1' : '0');
+            } catch (e) {}
+        }
+
+        function toggleFilterCollapse() {
+            setFilterCollapsed(!isFilterCollapsed);
+        }
+
+        function onSearchButtonClick() {
+            applyFilters();
+            // 手機版點搜尋後自動收合，讓使用者立刻看到篩選出的餐廳清單
+            if (window.innerWidth < 768) {
+                setFilterCollapsed(true);
+            }
+        }
+
         // 搜尋框 Enter 鍵快捷
         function handleSearchKeydown(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 applyFilters();
                 document.getElementById('quickSearchInput')?.blur();
+                // 手機版按 Enter 搜尋後自動收合篩選欄
+                if (window.innerWidth < 768) {
+                    setFilterCollapsed(true);
+                }
             }
         }
 
@@ -3699,6 +3791,14 @@
             renderCategoryChips();
             applyFilters();
             initRouletteCanvasInteractions();
+
+            // 初始化手機版篩選欄伸縮狀態：手機版預設收合避免擋住店家列表；電腦版預設展開
+            const savedCollapse = localStorage.getItem('DINNER_FILTER_COLLAPSED');
+            if (savedCollapse !== null) {
+                setFilterCollapsed(savedCollapse === '1');
+            } else {
+                setFilterCollapsed(window.innerWidth < 768);
+            }
         });
     </script>
 </body>
