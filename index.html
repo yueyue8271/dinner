@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 加到主畫面（iPhone / Android） -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="晚餐轉盤">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="data:image/png;base64,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">
+    <link rel="icon" type="image/png" href="data:image/png;base64,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">
     <title>晚餐吃什麼？周邊餐廳雷達與轉盤（無圖版）</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -68,10 +75,13 @@
                 </div>
 
                 <!-- 伸縮開關按鈕 (手機版可點擊收合/展開) -->
-                <button type="button" id="btnToggleFilters" onclick="toggleFilterCollapse()" class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 hover:bg-orange-100 text-orange-600 font-bold text-xs border border-orange-200 shadow-xs transition active:scale-95 cursor-pointer" title="切換展開或收合篩選欄">
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button type="button" onclick="openFavPanel()" class="shrink-0 flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs border border-amber-200 shadow-xs transition active:scale-95 cursor-pointer" title="我的最愛">⭐<span class="hidden sm:inline">我的最愛</span><span class="fav-count bg-white rounded-full px-1.5 text-[10px] text-amber-800 border border-amber-200">0</span></button>
+                    <button type="button" id="btnToggleFilters" onclick="toggleFilterCollapse()" class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 hover:bg-orange-100 text-orange-600 font-bold text-xs border border-orange-200 shadow-xs transition active:scale-95 cursor-pointer" title="切換展開或收合篩選欄">
                     <i id="toggleFilterIcon" class="fa-solid fa-chevron-up text-[11px] transition-transform duration-200"></i>
                     <span id="toggleFilterLabel">收合篩選</span>
                 </button>
+                </div>
             </div>
 
             <!-- 可伸縮面板 (Collapsible Filter Panel) -->
@@ -148,6 +158,16 @@
             </div>
         </div>
     </header>
+    <!-- 加到主畫面提示 -->
+    <div id="a2hsBanner" class="hidden max-w-6xl mx-auto px-4 pt-3 w-full">
+        <div class="bg-sky-50 border border-sky-200 text-sky-900 rounded-xl p-3 text-xs flex flex-col gap-2 shadow-xs">
+            <div class="flex gap-2"><span class="text-base leading-none">📲</span><div id="a2hsText" class="leading-relaxed"></div></div>
+            <div class="flex justify-end gap-4">
+                <button type="button" onclick="a2hsLater()" class="font-bold text-sky-700 cursor-pointer">知道了</button>
+                <button type="button" onclick="a2hsNever()" class="text-slate-500 cursor-pointer">不再提示</button>
+            </div>
+        </div>
+    </div>
 
     <!-- 主要內容區 -->
     <main class="max-w-6xl mx-auto px-4 py-5 flex-1 w-full">
@@ -259,6 +279,50 @@
         </div>
     </div>
 
+    <!-- 我的最愛面板 -->
+    <div id="favPanel" onclick="if(event.target===this)closeFavPanel()" class="fixed inset-0 z-[55] bg-slate-900/70 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4 hidden">
+        <div class="bg-slate-50 rounded-t-3xl sm:rounded-3xl max-w-lg w-full h-[88vh] sm:h-auto sm:max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="px-4 pt-4 pb-2 flex items-center justify-between bg-white border-b border-slate-100">
+                <h3 class="text-base font-black text-slate-900">⭐ 我的最愛 <span class="text-xs font-semibold text-slate-400">（共 <span class="fav-count">0</span> 家）</span></h3>
+                <button type="button" onclick="closeFavPanel()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="bg-white px-4 pt-2 pb-2 border-b border-slate-100">
+                <div id="favTabs" class="flex gap-2 overflow-x-auto pb-1"></div>
+                <div class="flex items-center justify-between mt-2">
+                    <div id="favCatTools" class="flex items-center gap-3"></div>
+                    <label class="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer"><input type="checkbox" id="favCheckAll" onchange="favCheckAll(this.checked)" class="w-4 h-4 accent-orange-500">全選</label>
+                </div>
+            </div>
+            <div id="favList" class="flex-1 overflow-y-auto px-4 py-3 space-y-2"></div>
+            <div class="bg-white border-t border-slate-200 px-4 pt-3 pb-4 space-y-2.5">
+                <div id="favActions" class="flex flex-wrap items-center gap-2 text-xs">
+                    <span class="text-slate-500">已勾選 <b id="favSelCount" class="text-orange-600">0</b> 家</span>
+                    <select id="favMoveTarget" class="bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1.5 text-xs font-semibold text-slate-700"></select>
+                    <button type="button" onclick="favMoveSelected()" class="px-3 py-1.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-bold cursor-pointer">移動</button>
+                    <button type="button" id="favBtnUncat" onclick="favUncategorizeSelected()" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold cursor-pointer">移出分類</button>
+                    <button type="button" onclick="favRemoveSelected()" class="px-3 py-1.5 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold cursor-pointer">取消最愛</button>
+                </div>
+                <button type="button" id="favSpinBtn" onclick="favStartSpin()" class="w-full py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-sm shadow-md active:scale-95 transition cursor-pointer">🎲 用這個分類轉轉盤</button>
+                <div class="flex items-center justify-center gap-5 text-xs text-slate-500">
+                    <button type="button" onclick="favExport()" class="hover:text-orange-600 font-medium cursor-pointer"><i class="fa-solid fa-file-export mr-1"></i>匯出我的最愛</button>
+                    <button type="button" onclick="favImportPick()" class="hover:text-orange-600 font-medium cursor-pointer"><i class="fa-solid fa-file-import mr-1"></i>匯入（會覆蓋）</button>
+                    <input type="file" id="favImportInput" accept=".json,application/json" class="hidden" onchange="favImportFile(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 最愛轉盤：選擇轉全部或只轉營業中 -->
+    <div id="favSpinChoice" onclick="if(event.target===this)favCloseSpinChoice()" class="fixed inset-0 z-[58] bg-slate-900/60 flex items-center justify-center p-6 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-3">
+            <h4 id="favSpinTitle" class="text-base font-black text-slate-900 text-center">用分類轉轉盤</h4>
+            <button type="button" id="favSpinAllBtn" onclick="favSpinWith(false)" class="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm cursor-pointer">轉全部店家</button>
+            <button type="button" id="favSpinOpenBtn" onclick="favSpinWith(true)" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm cursor-pointer">只轉營業中店家</button>
+            <p id="favSpinHint" class="text-[11px] text-slate-400 text-center"></p>
+            <button type="button" onclick="favCloseSpinChoice()" class="w-full py-2 text-xs text-slate-500 cursor-pointer">取消</button>
+        </div>
+    </div>
+
     <!-- 菜單詳情 Modal (Menu & Detail Lightbox) -->
     <div id="menuModal" onclick="if(event.target===this)closeMenuModal()" class="fixed inset-0 z-[60] bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-200">
@@ -279,9 +343,12 @@
                         <p id="menuModalSub" class="text-[11px] text-slate-500">Google 商家相簿與招牌價格表</p>
                     </div>
                 </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <button type="button" id="menuModalFavBtn" onclick="toggleFavFromModal()" class="shrink-0 px-2.5 h-8 rounded-full flex items-center gap-1 bg-white text-slate-600 border border-slate-200 cursor-pointer">☆</button>
                 <button onclick="closeMenuModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center cursor-pointer transition">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
+                </div>
             </div>
 
             <!-- 內容滑動區 -->
@@ -382,7 +449,7 @@
     </div>
 
     <!-- 全局提示 Toast (Toast Notification) -->
-    <div id="toastNotification" class="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 backdrop-blur-md text-white px-4 py-2.5 rounded-full text-xs font-semibold shadow-xl flex items-center gap-2 pointer-events-none transition-all duration-300 opacity-0 translate-y-3 hidden">
+    <div id="toastNotification" class="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-[70] bg-slate-900/90 backdrop-blur-md text-white px-4 py-2.5 rounded-full text-xs font-semibold shadow-xl flex items-center gap-2 pointer-events-none transition-all duration-300 opacity-0 translate-y-3 hidden">
         <i class="fa-solid fa-circle-check text-emerald-400"></i>
         <span id="toastMessage">提示訊息</span>
     </div>
@@ -1952,9 +2019,9 @@
                         <div class="flex-1 min-w-0">
                             <!-- 第一行：名稱與星等 (點擊開啟詳細資訊字卡) -->
                             <div class="flex items-center justify-between gap-1">
-                                <h3 class="font-bold text-slate-900 text-sm truncate hover:text-orange-600 transition cursor-pointer" onclick="openMenuModal('${r.id}')" title="點擊查看詳細資訊字卡">
+                                <div class="flex items-center gap-1 min-w-0"><button type="button" id="favbtn-${r.id}" onclick="toggleFav('${r.id}', event)" class="shrink-0 text-base leading-none w-6 h-6 flex items-center justify-center rounded-full hover:bg-amber-50 cursor-pointer" title="${isFav(r) ? '取消最愛' : '加入我的最愛'}">${favStarHtml(r)}</button><h3 class="font-bold text-slate-900 text-sm truncate hover:text-orange-600 transition cursor-pointer" onclick="openMenuModal('${r.id}')" title="點擊查看詳細資訊字卡">
                                     ${r.name}
-                                </h3>
+                                </h3></div>
                                 <div class="flex items-center gap-1 text-[11px] font-semibold text-amber-500 shrink-0">
                                     <i class="fa-solid fa-star text-amber-400"></i>
                                     <span>${r.rating}</span>
@@ -2193,6 +2260,7 @@
         function closeRouletteModal() {
             if (isSpinning) return;
             document.getElementById('rouletteModal').classList.add('hidden');
+            if (favWheelList) { favWheelList = null; updateCounters(); }
         }
 
         // 啟動旋轉動畫 (物理緩動 Cubic Ease-Out)
@@ -2294,6 +2362,7 @@
                 ? r.subCategories.join(' · ')
                 : r.subCategory;
             document.getElementById('menuModalName').textContent = r.name;
+            updateModalFavBtn(r);
             document.getElementById('menuModalSub').textContent = `${r.category} (${subs}) · 距家 ${formatDistance(r.distance)} · Google 評分 ${r.rating} 星 (${r.reviewCount} 則評論)`;
             /* 無圖版：不載入店家照片 */
                         const statusBadge = `<span class="ml-2 font-bold ${r.isOpen ? 'text-emerald-600' : (r.isTemporarilyClosed || r.businessStatus === 'CLOSED_TEMPORARILY' ? 'text-rose-600' : 'text-slate-500')}">${r.statusText}</span>`;
@@ -2328,7 +2397,8 @@
         function excludeFromMenuModal() {
             if (!currentMenuRestaurant) return;
             const removedName = currentMenuRestaurant.name;
-            selectedIds.delete(currentMenuRestaurant.id);
+            if (favWheelList) favWheelList = favWheelList.filter(x => x.id !== currentMenuRestaurant.id);
+            else selectedIds.delete(currentMenuRestaurant.id);
             closeMenuModal();
             renderRestaurants();
             showToast(`已剔除「${removedName}」，立即重新轉動！`);
@@ -3092,12 +3162,13 @@
         }
         function isNewShop(r) { return r.firstSeen > 0 && (Date.now() - r.firstSeen) < 7 * 24 * 3600 * 1000; }
         function getSelectedList() {
+            if (favWheelList) return favWheelList;
             const onlyOpen = committedFilters.openStatus === 'open';
             return restaurants.filter(r => selectedIds.has(r.id) && (!onlyOpen || r.isOpen));
         }
         function showMoreRestaurants() { visibleLimit += PAGE_SIZE; renderRestaurants(); }
         function serializeRestaurants() {
-            return JSON.stringify(restaurants.map(r => ({ ...r, dishes: undefined })));
+            return JSON.stringify(restaurants.filter(r => !r.fromFavorites).map(r => ({ ...r, dishes: undefined })));
         }
         function persistRestaurants() {
             try { localStorage.setItem('DINNER_SYNCED_RESTAURANTS_V2', serializeRestaurants()); }
@@ -3515,6 +3586,357 @@
             }
         }
 
+
+        // ==========================================
+        // 我的最愛（存在本機瀏覽器 localStorage；每家店只屬於一個分類）
+        // ==========================================
+        const FAV_KEY = 'DINNER_FAVORITES_V1';
+        const FAV_UNCAT = '__uncat__';
+        let favData = { version: 1, categories: [], items: {} };
+        let favActiveCat = FAV_UNCAT;
+        const favChecked = new Set();
+        let favWheelList = null;   // 用最愛分類轉盤時的候選清單（關閉轉盤後清空）
+
+        function favLoad() {
+            try {
+                const raw = localStorage.getItem(FAV_KEY);
+                if (raw) {
+                    const d = JSON.parse(raw);
+                    if (d && d.items && typeof d.items === 'object' && Array.isArray(d.categories)) favData = d;
+                }
+            } catch (e) {}
+        }
+        function favSave() {
+            const str = JSON.stringify(favData);
+            try { localStorage.setItem(FAV_KEY, str); return true; }
+            catch (e) {
+                // 空間不足：先清掉可重建的同步暫存，再存一次
+                try {
+                    localStorage.removeItem('DINNER_SYNCED_RESTAURANTS_V2');
+                    localStorage.removeItem('DINNER_SYNCED_RESTAURANTS_1200M');
+                    localStorage.setItem(FAV_KEY, str);
+                    return true;
+                } catch (e2) { showToast('⚠️ 瀏覽器儲存空間不足，我的最愛未能儲存'); return false; }
+            }
+        }
+        function favKeyOf(r) { return (r && (r.placeId || r.id)) || ''; }
+        function isFav(r) { return !!favData.items[favKeyOf(r)]; }
+        function favStarHtml(r) { return isFav(r) ? '⭐' : '☆'; }
+        function favSnapshot(r) {
+            const keys = ['id', 'placeId', 'name', 'address', 'phone', 'lat', 'lng', 'category', 'subCategory', 'subCategories', 'categories', 'tags', 'mapUrl', 'hours', 'hoursWeek', 'rating', 'reviewCount', 'avgPrice', 'priceLevel', 'businessStatus', 'types', 'primaryType', 'classSource', 'classConfidence'];
+            const s = {};
+            keys.forEach(k => { if (r[k] !== undefined && r[k] !== null) s[k] = r[k]; });
+            return s;
+        }
+        function findRestaurantByFavKey(k) { return restaurants.find(r => favKeyOf(r) === k); }
+        // 資料庫裡沒有的最愛店家（例如匯入別人的清單）用快照補進來，才能顯示與轉盤
+        function favEnsureRestaurants() {
+            let added = 0;
+            Object.entries(favData.items).forEach(([k, it]) => {
+                if (findRestaurantByFavKey(k) || !it || !it.snap || !it.snap.id) return;
+                const r = { ...it.snap, fromFavorites: true };
+                try { normalizeRestaurant(r); } catch (e) {}
+                restaurants.push(r);
+                added++;
+            });
+            return added;
+        }
+        function refreshFavUi(r) {
+            if (r) {
+                const b = document.getElementById('favbtn-' + r.id);
+                if (b) { b.textContent = favStarHtml(r); b.title = isFav(r) ? '取消最愛' : '加入我的最愛'; }
+                if (typeof currentMenuRestaurant !== 'undefined' && currentMenuRestaurant && currentMenuRestaurant.id === r.id) updateModalFavBtn(r);
+            }
+            const n = Object.keys(favData.items).length;
+            document.querySelectorAll('.fav-count').forEach(el => { el.textContent = n; });
+        }
+        function toggleFav(id, ev) {
+            if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+            const r = restaurants.find(x => x.id === id);
+            if (!r) return;
+            const k = favKeyOf(r);
+            if (favData.items[k]) {
+                delete favData.items[k];
+                showToast(`已取消最愛：${r.name}`);
+            } else {
+                favData.items[k] = { cat: FAV_UNCAT, addedAt: Date.now(), snap: favSnapshot(r) };
+                showToast(`⭐ 已加入我的最愛（未分類）：${r.name}`);
+            }
+            favSave();
+            refreshFavUi(r);
+            if (isFavPanelOpen()) renderFavPanel();
+        }
+        function updateModalFavBtn(r) {
+            const b = document.getElementById('menuModalFavBtn');
+            if (!b || !r) return;
+            const on = isFav(r);
+            b.innerHTML = on ? '⭐<span class="text-xs font-bold">已加入</span>' : '☆<span class="text-xs font-bold">加入最愛</span>';
+            b.className = 'shrink-0 px-2.5 h-8 rounded-full flex items-center gap-1 transition cursor-pointer ' + (on ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-white text-slate-600 border border-slate-200 hover:bg-amber-50');
+        }
+        function toggleFavFromModal() { if (currentMenuRestaurant) toggleFav(currentMenuRestaurant.id); }
+
+        // ---------- 我的最愛面板 ----------
+        function isFavPanelOpen() { const m = document.getElementById('favPanel'); return !!m && !m.classList.contains('hidden'); }
+        function openFavPanel() {
+            favEnsureRestaurants();
+            favChecked.clear();
+            if (favActiveCat !== FAV_UNCAT && !favData.categories.some(c => c.id === favActiveCat)) favActiveCat = FAV_UNCAT;
+            document.getElementById('favPanel').classList.remove('hidden');
+            renderFavPanel();
+        }
+        function closeFavPanel() { document.getElementById('favPanel').classList.add('hidden'); favChecked.clear(); }
+        function favCatName(id) {
+            if (id === FAV_UNCAT) return '未分類';
+            const c = favData.categories.find(x => x.id === id);
+            return c ? c.name : '未分類';
+        }
+        function favCatOf(it) { return favData.categories.some(c => c.id === it.cat) ? it.cat : FAV_UNCAT; }
+        function favItemsIn(catId) {
+            return Object.entries(favData.items)
+                .filter(([k, it]) => it && favCatOf(it) === catId)
+                .map(([k, it]) => ({ key: k, it, r: findRestaurantByFavKey(k) }))
+                .filter(x => x.r)
+                .sort((a, b) => (a.r.distance || 0) - (b.r.distance || 0));
+        }
+        function escHtml(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+        }
+        function renderFavPanel() {
+            const cats = [{ id: FAV_UNCAT, name: '未分類' }, ...favData.categories];
+            document.getElementById('favTabs').innerHTML = cats.map(c => {
+                const on = c.id === favActiveCat;
+                return `<button type="button" onclick="favSelectCat('${c.id}')" class="shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition cursor-pointer ${on ? 'bg-orange-500 text-white shadow-xs' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}">${escHtml(c.name)} (${favItemsIn(c.id).length})</button>`;
+            }).join('') + `<button type="button" onclick="favAddCategory()" class="shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-white text-orange-600 border border-dashed border-orange-300 hover:bg-orange-50 cursor-pointer">＋ 新增分類</button>`;
+
+            const isUncat = favActiveCat === FAV_UNCAT;
+            document.getElementById('favCatTools').innerHTML = isUncat
+                ? '<span class="text-[11px] text-slate-400">「未分類」不能改名或刪除</span>'
+                : `<button type="button" onclick="favRenameCategory()" class="text-xs text-slate-600 hover:text-orange-600 font-medium cursor-pointer"><i class="fa-solid fa-pen text-[10px] mr-1"></i>改名</button>
+                   <button type="button" onclick="favDeleteCategory()" class="text-xs text-slate-600 hover:text-rose-600 font-medium cursor-pointer"><i class="fa-solid fa-trash text-[10px] mr-1"></i>刪除分類</button>`;
+
+            const list = favItemsIn(favActiveCat);
+            const keysHere = new Set(list.map(x => x.key));
+            [...favChecked].forEach(k => { if (!keysHere.has(k)) favChecked.delete(k); });
+            const box = document.getElementById('favList');
+            if (!list.length) {
+                box.innerHTML = `<div class="text-center text-xs text-slate-400 py-12 leading-relaxed">${isUncat ? '還沒有最愛店家。<br>在店家卡片或詳細字卡按 ☆ 就能加入。' : '這個分類還沒有店家。<br>到「未分類」勾選店家，再用「移動到」放進來。'}</div>`;
+            } else {
+                box.innerHTML = list.map(({ key, r }) => `
+                    <label class="flex items-center gap-3 p-2.5 rounded-xl border ${favChecked.has(key) ? 'border-orange-300 bg-orange-50' : 'border-slate-200 bg-white'} cursor-pointer">
+                        <input type="checkbox" ${favChecked.has(key) ? 'checked' : ''} onchange="favToggleCheck('${key}')" class="w-4 h-4 accent-orange-500 shrink-0">
+                        <div class="min-w-0 flex-1">
+                            <div class="text-sm font-bold text-slate-900 truncate hover:text-orange-600" onclick="event.preventDefault(); openMenuModal('${r.id}')">${escHtml(r.name)}</div>
+                            <div class="text-[11px] text-slate-500 truncate">${formatDistance(r.distance)} · ${escHtml(r.subCategory || r.category || '')} · <span class="${r.isOpen ? 'text-emerald-600' : 'text-slate-400'}">${r.isOpen ? '營業中' : '休息中'}</span></div>
+                        </div>
+                    </label>`).join('');
+            }
+            document.getElementById('favCheckAll').checked = list.length > 0 && list.every(x => favChecked.has(x.key));
+            document.getElementById('favMoveTarget').innerHTML = '<option value="">移動到…</option>' +
+                favData.categories.filter(c => c.id !== favActiveCat).map(c => `<option value="${c.id}">${escHtml(c.name)}</option>`).join('');
+            document.getElementById('favSelCount').textContent = favChecked.size;
+            document.getElementById('favActions').classList.toggle('opacity-50', favChecked.size === 0);
+            document.getElementById('favBtnUncat').classList.toggle('hidden', isUncat);
+            document.getElementById('favSpinBtn').textContent = `🎲 用「${favCatName(favActiveCat)}」轉轉盤（${list.length} 家）`;
+            refreshFavUi(null);
+        }
+        function favSelectCat(id) { favActiveCat = id; favChecked.clear(); renderFavPanel(); }
+        function favToggleCheck(key) { if (favChecked.has(key)) favChecked.delete(key); else favChecked.add(key); renderFavPanel(); }
+        function favCheckAll(on) { favChecked.clear(); if (on) favItemsIn(favActiveCat).forEach(x => favChecked.add(x.key)); renderFavPanel(); }
+        function favNeedSelection() { if (!favChecked.size) { showToast('請先勾選店家'); return false; } return true; }
+        function favMoveSelected() {
+            if (!favNeedSelection()) return;
+            const target = document.getElementById('favMoveTarget').value;
+            if (!target) {
+                showToast(favData.categories.length ? '請先在「移動到…」選擇分類' : '請先按「＋ 新增分類」建立分類');
+                return;
+            }
+            const n = favChecked.size;
+            favChecked.forEach(k => { if (favData.items[k]) favData.items[k].cat = target; });
+            favSave(); favChecked.clear(); renderFavPanel();
+            showToast(`已將 ${n} 家移到「${favCatName(target)}」`);
+        }
+        function favUncategorizeSelected() {
+            if (!favNeedSelection()) return;
+            const n = favChecked.size;
+            favChecked.forEach(k => { if (favData.items[k]) favData.items[k].cat = FAV_UNCAT; });
+            favSave(); favChecked.clear(); renderFavPanel();
+            showToast(`已將 ${n} 家移回「未分類」`);
+        }
+        function favRemoveSelected() {
+            if (!favNeedSelection()) return;
+            const n = favChecked.size;
+            if (!confirm(`確定要把勾選的 ${n} 家店從我的最愛移除嗎？`)) return;
+            favChecked.forEach(k => { delete favData.items[k]; });
+            favSave(); favChecked.clear(); renderFavPanel(); renderRestaurants();
+            showToast(`已從我的最愛移除 ${n} 家`);
+        }
+        function favValidName(name, exceptId) {
+            if (name === null || name === undefined) return null;
+            name = String(name).trim();
+            if (!name) { showToast('分類名稱不能空白'); return null; }
+            if (name === '未分類') { showToast('「未分類」是保留名稱，請換一個'); return null; }
+            if (name.length > 20) { showToast('分類名稱請在 20 字以內'); return null; }
+            if (favData.categories.some(c => c.name === name && c.id !== exceptId)) { showToast('已經有同名的分類'); return null; }
+            return name;
+        }
+        function favAddCategory() {
+            const name = favValidName(prompt('新增分類名稱（例如：約會、宵夜、家庭聚餐）'));
+            if (!name) return;
+            const id = 'c' + Date.now().toString(36) + Math.floor(Math.random() * 1000).toString(36);
+            favData.categories.push({ id, name });
+            favSave(); favActiveCat = id; favChecked.clear(); renderFavPanel();
+            showToast(`已新增分類「${name}」`);
+        }
+        function favRenameCategory() {
+            if (favActiveCat === FAV_UNCAT) return;
+            const c = favData.categories.find(x => x.id === favActiveCat);
+            if (!c) return;
+            const name = favValidName(prompt('分類新名稱', c.name), c.id);
+            if (!name) return;
+            c.name = name; favSave(); renderFavPanel();
+        }
+        function favDeleteCategory() {
+            if (favActiveCat === FAV_UNCAT) return;
+            const c = favData.categories.find(x => x.id === favActiveCat);
+            if (!c) return;
+            const n = favItemsIn(c.id).length;
+            if (!confirm(`確定刪除分類「${c.name}」？\n裡面的 ${n} 家店會移回「未分類」，不會從最愛消失。`)) return;
+            Object.values(favData.items).forEach(it => { if (it && it.cat === c.id) it.cat = FAV_UNCAT; });
+            favData.categories = favData.categories.filter(x => x.id !== c.id);
+            favSave(); favActiveCat = FAV_UNCAT; favChecked.clear(); renderFavPanel();
+        }
+
+        // ---------- 用分類轉轉盤 ----------
+        function favStartSpin() {
+            const list = favItemsIn(favActiveCat).map(x => x.r);
+            if (list.length < 2) { showToast('這個分類至少要有 2 家店才能轉轉盤'); return; }
+            const openN = list.filter(r => r.isOpen).length;
+            document.getElementById('favSpinTitle').textContent = `用「${favCatName(favActiveCat)}」轉轉盤`;
+            document.getElementById('favSpinAllBtn').textContent = `轉全部店家（${list.length} 家）`;
+            const ob = document.getElementById('favSpinOpenBtn');
+            ob.textContent = `只轉營業中店家（${openN} 家）`;
+            ob.disabled = openN < 2;
+            ob.classList.toggle('opacity-40', openN < 2);
+            document.getElementById('favSpinHint').textContent = openN < 2 ? '目前營業中的店不到 2 家，只能轉全部店家' : '';
+            document.getElementById('favSpinChoice').classList.remove('hidden');
+        }
+        function favCloseSpinChoice() { document.getElementById('favSpinChoice').classList.add('hidden'); }
+        function favSpinWith(onlyOpen) {
+            let list = favItemsIn(favActiveCat).map(x => x.r);
+            if (onlyOpen) list = list.filter(r => r.isOpen);
+            if (list.length < 2) { showToast('可轉的店家不到 2 家'); return; }
+            favWheelList = list;
+            favCloseSpinChoice();
+            closeFavPanel();
+            document.getElementById('rouletteModal').classList.remove('hidden');
+            drawRouletteWheel();
+            setTimeout(() => spinWheel(), 300);
+        }
+
+        // ---------- 匯出／匯入（匯入會整包覆蓋目前的我的最愛） ----------
+        function favSafeId(s) { return String(s || '').replace(/[^\w-]/g, '').slice(0, 40); }
+        function favExport() {
+            const items = {};
+            Object.entries(favData.items).forEach(([k, it]) => {
+                const r = findRestaurantByFavKey(k);
+                items[k] = { cat: favCatOf(it), addedAt: it.addedAt, snap: r ? favSnapshot(r) : it.snap };
+            });
+            const n = Object.keys(items).length;
+            if (!n) { showToast('我的最愛是空的，沒有可匯出的資料'); return; }
+            const payload = { type: 'dinner-favorites', version: 1, exportedAt: new Date().toISOString(), categories: favData.categories, items };
+            const d = new Date();
+            const fname = `我的最愛_${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}.json`;
+            const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+            const download = () => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = fname;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+                showToast(`已下載「${fname}」（${n} 家最愛）`);
+            };
+            // 只有手機用系統分享（可直接傳 LINE、存到檔案）；電腦一律直接下載
+            const ua = navigator.userAgent || '';
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+            let file = null;
+            try { file = new File([blob], fname, { type: 'application/json' }); } catch (e) {}
+            if (isMobile && file && navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({ files: [file], title: '我的最愛' })
+                    .then(() => showToast(`已匯出 ${n} 家最愛`))
+                    .catch(err => { if (!err || err.name !== 'AbortError') download(); });   // 使用者按取消就不動作；其他失敗改為下載
+                return;
+            }
+            download();
+        }
+        function favImportPick() { const inp = document.getElementById('favImportInput'); inp.value = ''; inp.click(); }
+        function favImportFile(ev) {
+            const f = ev.target.files && ev.target.files[0];
+            if (!f) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                let d;
+                try { d = JSON.parse(reader.result); } catch (e) { showToast('❌ 檔案格式錯誤，沒有變更任何資料'); return; }
+                if (!d || d.type !== 'dinner-favorites' || !d.items || typeof d.items !== 'object' || !Array.isArray(d.categories)) {
+                    showToast('❌ 這不是「我的最愛」匯出檔，沒有變更任何資料');
+                    return;
+                }
+                const cats = [];
+                d.categories.forEach(c => {
+                    const id = favSafeId(c && c.id), name = String((c && c.name) || '').trim().slice(0, 20);
+                    if (id && name && name !== '未分類' && !cats.some(x => x.id === id || x.name === name)) cats.push({ id, name });
+                });
+                const catIds = new Set(cats.map(c => c.id));
+                const items = {};
+                Object.entries(d.items).forEach(([k, it]) => {
+                    const key = favSafeId(k);
+                    if (key && it && it.snap && it.snap.id) items[key] = { cat: catIds.has(favSafeId(it.cat)) ? favSafeId(it.cat) : FAV_UNCAT, addedAt: it.addedAt || Date.now(), snap: it.snap };
+                });
+                const curN = Object.keys(favData.items).length, curC = favData.categories.length;
+                if (!confirm(`匯入會覆蓋你目前的我的最愛（${curN} 家、${curC} 個分類），\n改成檔案內的 ${Object.keys(items).length} 家、${cats.length} 個分類。\n\n確定要覆蓋嗎？`)) return;
+                favData = { version: 1, categories: cats, items };
+                if (!favSave()) return;
+                const added = favEnsureRestaurants();
+                favActiveCat = FAV_UNCAT;
+                favChecked.clear();
+                renderFavPanel();
+                renderRestaurants();
+                showToast(`✅ 已匯入 ${Object.keys(items).length} 家最愛` + (added ? `（含 ${added} 家資料庫沒有的店）` : ''));
+            };
+            reader.readAsText(f);
+        }
+
+        // ---------- 加到主畫面提示 ----------
+        function initHomeScreenHint() {
+            const ua = navigator.userAgent || '';
+            const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+            if (standalone) return;
+            const isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+            const isAndroid = /Android/i.test(ua);
+            if (!isIOS && !isAndroid) return;
+            try {
+                if (localStorage.getItem('DINNER_A2HS_DISMISSED') === '1' || sessionStorage.getItem('DINNER_A2HS_LATER') === '1') return;
+            } catch (e) {}
+            const inApp = /Line\/|FBAN|FBAV|FB_IAB|Instagram|MicroMessenger/i.test(ua);
+            let msg;
+            if (inApp) msg = `你正在 App 內建的瀏覽器開啟，<b>我的最愛不會被保存</b>。請點右上角選單選「以${isIOS ? ' Safari' : ' Chrome'} 開啟」，再加到主畫面。`;
+            else if (isIOS) msg = '加到主畫面，我的最愛才能長期保存：點 Safari 下方的 <b>分享</b> <i class="fa-solid fa-arrow-up-from-bracket"></i>，選「<b>加入主畫面</b>」，之後都從主畫面圖示開啟。<br><span class="text-sky-700/80">（Safari 和主畫面圖示的最愛是分開保存的）</span>';
+            else msg = '加到主畫面使用更方便：點 Chrome 右上角 <b>⋮</b>，選「<b>加到主畫面</b>」，之後都從主畫面圖示開啟。';
+            document.getElementById('a2hsText').innerHTML = msg;
+            document.getElementById('a2hsBanner').classList.remove('hidden');
+        }
+        function a2hsLater() { try { sessionStorage.setItem('DINNER_A2HS_LATER', '1'); } catch (e) {} document.getElementById('a2hsBanner').classList.add('hidden'); }
+        function a2hsNever() { try { localStorage.setItem('DINNER_A2HS_DISMISSED', '1'); } catch (e) {} document.getElementById('a2hsBanner').classList.add('hidden'); }
+
+        function initFavorites() {
+            favLoad();
+            favEnsureRestaurants();
+            refreshFavUi(null);
+            initHomeScreenHint();
+            // 請瀏覽器把本網站資料標為「永久儲存」，空間不足時不優先清除
+            try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
+        }
+
         // 初始化
         window.addEventListener('DOMContentLoaded', async () => {
             try {
@@ -3580,6 +4002,7 @@
 
             // 將校正後之最新資料寫回 localStorage
             persistRestaurants();
+            initFavorites();
 
             renderCategoryChips();
             applyFilters();
