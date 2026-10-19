@@ -1,13 +1,12 @@
 // 晚餐轉盤離線快取（Service Worker）
 // 網頁：先抓最新版（4 秒內沒回應就用快取）；樣式與字型等 CDN 檔案：先用快取、背景更新
-const CACHE = 'dinner-v2';
+const CACHE = 'dinner-v3';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 const CDN_PRECACHE = [
-    'https://cdn.tailwindcss.com',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
     'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap'
 ];
-const CDN_HOSTS = ['cdn.tailwindcss.com', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+const CDN_HOSTS = ['cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', event => {
     self.skipWaiting();
