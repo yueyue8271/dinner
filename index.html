@@ -49,6 +49,22 @@
             scrollbar-width: none;
         }
     </style>
+
+    <style>
+        /* 地圖模式 */
+        body.map-mode #restaurantGrid, body.map-mode #emptyState { display: none !important; }
+        #mapView { isolation: isolate; }
+        /* 地圖模式時提示訊息移到上方，避免擋住店家小卡 */
+        body.map-mode #toastNotification { bottom: auto !important; top: 170px; }
+        .map-pin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.45); box-sizing: border-box; }
+        .map-pin.sel { outline: 3px solid #0f172a; outline-offset: 1px; }
+        .map-pin.fav { width: 20px; height: 20px; border: none; box-shadow: none; background: none !important; font-size: 18px; line-height: 20px; text-align: center; filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)); }
+        .map-pin.fav.sel { outline-offset: -1px; border-radius: 50%; }
+        .map-home { font-size: 24px; line-height: 28px; text-align: center; filter: drop-shadow(0 1px 2px rgba(0,0,0,.45)); }
+        .map-ring-label { font-size: 10px; font-weight: 700; color: #ea580c; background: rgba(255,255,255,.85); border-radius: 6px; padding: 0 4px; white-space: nowrap; transform: translate(-50%, -50%); display: inline-block; }
+        .map-user { width: 16px; height: 16px; border-radius: 50%; background: #2563eb; border: 3px solid #fff; box-shadow: 0 0 0 0 rgba(37,99,235,.6); animation: mapUserPulse 2s infinite; box-sizing: border-box; }
+        @keyframes mapUserPulse { 0% { box-shadow: 0 0 0 0 rgba(37,99,235,.55); } 70% { box-shadow: 0 0 0 14px rgba(37,99,235,0); } 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); } }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col pb-24 md:pb-16 selection:bg-orange-100 selection:text-orange-900">
 
@@ -196,6 +212,30 @@
                     <span>轉動晚餐轉盤</span>
                 </button>
             </div>
+        </div>
+
+        <!-- 清單／地圖切換 -->
+        <div id="viewToggleRow" class="flex items-center justify-between gap-2 mb-3">
+            <div class="inline-flex p-1 bg-slate-100 rounded-full border border-slate-200">
+                <button type="button" id="viewListBtn" onclick="setViewMode('list')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-white text-orange-600 shadow-xs cursor-pointer">📋 清單</button>
+                <button type="button" id="viewMapBtn" onclick="setViewMode('map')" class="px-4 py-1.5 rounded-full text-xs font-bold text-slate-500 cursor-pointer">🗺️ 地圖</button>
+            </div>
+            <span id="mapCountLabel" class="hidden text-[11px] font-semibold text-slate-500"></span>
+        </div>
+
+        <!-- 地圖模式 -->
+        <div id="mapView" class="hidden relative rounded-2xl overflow-hidden border border-slate-200 shadow-xs bg-slate-100 mb-20 md:mb-0" style="height: calc(100vh - 228px); height: calc(100dvh - 228px); min-height: 360px;">
+            <div id="mapCanvas" class="absolute inset-0" style="z-index:0"></div>
+            <div id="mapLoading" style="z-index:1100" class="absolute inset-0 flex items-center justify-center bg-slate-50 text-xs text-slate-500 text-center px-6">地圖載入中…</div>
+            <div class="absolute top-2 right-2 flex flex-col gap-2" style="z-index:1000">
+                <button type="button" onclick="mapLocateMe()" class="w-10 h-10 rounded-full bg-white shadow-md border border-slate-200 text-blue-600 flex items-center justify-center cursor-pointer active:scale-95" title="回到我的位置"><i class="fa-solid fa-location-crosshairs text-base"></i></button>
+                <button type="button" onclick="mapGoHome()" class="w-10 h-10 rounded-full bg-white shadow-md border border-slate-200 flex items-center justify-center cursor-pointer active:scale-95 text-base" title="回到家">🏠</button>
+            </div>
+            <div class="absolute top-2 left-12" style="z-index:1000">
+                <button type="button" onclick="document.getElementById('mapLegendList').classList.toggle('hidden')" class="px-2.5 py-1 rounded-full bg-white/95 shadow-md border border-slate-200 text-[11px] font-bold text-slate-600 cursor-pointer">🎨 圖例</button>
+                <div id="mapLegendList" class="hidden mt-1.5 bg-white/95 rounded-xl shadow-md border border-slate-200 p-2 space-y-1 text-[11px] text-slate-700"></div>
+            </div>
+            <div id="mapCard" style="z-index:1000" class="hidden absolute left-2 right-2 bottom-2 bg-white rounded-2xl shadow-xl border border-slate-200 p-3 md:left-auto md:w-96"></div>
         </div>
 
         <!-- 餐廳列表 (雙欄響應式網格) -->
@@ -1902,6 +1942,7 @@
         // 渲染餐廳卡片列表
         function renderRestaurants() {
             const allFiltered = getFilteredRestaurants();
+            scheduleMapUpdate();
             const filtered = allFiltered.slice(0, visibleLimit);
             const grid = document.getElementById('restaurantGrid');
             const emptyState = document.getElementById('emptyState');
@@ -2906,6 +2947,7 @@
             favSave();
             refreshFavUi(r);
             if (isFavPanelOpen()) renderFavPanel();
+            if (typeof mapRefreshMarker === 'function') { mapRefreshMarker(r.id); if (mapCardId === r.id) showMapCard(r.id); }
         }
         function updateModalFavBtn(r) {
             const b = document.getElementById('menuModalFavBtn');
@@ -3197,6 +3239,232 @@
             }
         }
 
+
+        // ==========================================
+        // 地圖模式（Leaflet + OpenStreetMap，免費、不需 API key）
+        // 只顯示目前篩選條件下的店家；依 8 大類分色；可加入／移出轉盤
+        // ==========================================
+        const MAP_CAT_COLORS = {
+            '便當與飯食類': '#f97316', '健康餐與蔬食': '#22c55e', '麵食與餃子點心': '#eab308', '台灣傳統小吃與宵夜': '#ef4444',
+            '鍋物與溫補湯品': '#a855f7', '日韓與亞洲風味': '#ec4899', '西式、鐵板與速食': '#3b82f6', '咖啡、甜點與輕食飲品': '#92400e', '其他／未分類': '#94a3b8'
+        };
+        const LEAFLET_ASSETS = {
+            css: ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css',
+                  'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css',
+                  'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css'],
+            js: ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js',
+                 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js']
+        };
+        let viewMode = 'list';
+        let mapObj = null, mapCluster = null, leafletLoading = null;
+        const mapMarkers = new Map();          // 店家 id → 標記
+        let mapCardId = null, mapUpdateTimer = null, mapLastDistance = null;
+        let mapWatchId = null, mapUserPos = null, mapUserMarker = null, mapUserCircle = null, mapPendingLocate = false;
+
+        function loadLeaflet() {
+            if (window.L && L.markerClusterGroup) return Promise.resolve();
+            if (leafletLoading) return leafletLoading;
+            LEAFLET_ASSETS.css.forEach(href => {
+                if (document.querySelector(`link[href="${href}"]`)) return;
+                const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; document.head.appendChild(l);
+            });
+            const addJs = src => new Promise((resolve, reject) => {
+                const s = document.createElement('script'); s.src = src;
+                s.onload = resolve; s.onerror = () => reject(new Error('無法載入 ' + src));
+                document.head.appendChild(s);
+            });
+            leafletLoading = addJs(LEAFLET_ASSETS.js[0]).then(() => addJs(LEAFLET_ASSETS.js[1])).catch(err => { leafletLoading = null; throw err; });
+            return leafletLoading;
+        }
+
+        function setViewMode(mode) {
+            viewMode = mode === 'map' ? 'map' : 'list';
+            try { localStorage.setItem('DINNER_VIEW_MODE', viewMode); } catch (e) {}
+            const on = 'px-4 py-1.5 rounded-full text-xs font-bold bg-white text-orange-600 shadow-xs cursor-pointer';
+            const off = 'px-4 py-1.5 rounded-full text-xs font-bold text-slate-500 cursor-pointer';
+            document.getElementById('viewListBtn').className = viewMode === 'list' ? on : off;
+            document.getElementById('viewMapBtn').className = viewMode === 'map' ? on : off;
+            document.body.classList.toggle('map-mode', viewMode === 'map');
+            document.getElementById('mapView').classList.toggle('hidden', viewMode !== 'map');
+            document.getElementById('mapCountLabel').classList.toggle('hidden', viewMode !== 'map');
+            if (viewMode === 'map') {
+                openMapView();
+                // 讓地圖剛好排在頂部標題列下方，整張地圖都在畫面內
+                const row = document.getElementById('viewToggleRow'), hdr = document.querySelector('header');
+                const y = row.getBoundingClientRect().top + window.scrollY - (hdr ? hdr.offsetHeight : 0) - 6;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'auto' });
+            } else {
+                mapStopWatch();
+                renderRestaurants();
+            }
+        }
+
+        function openMapView() {
+            const loading = document.getElementById('mapLoading');
+            loading.classList.remove('hidden');
+            loading.textContent = '地圖載入中…';
+            loadLeaflet().then(() => {
+                initMap();
+                loading.classList.add('hidden');
+                mapObj.invalidateSize();
+                updateMapMarkers(true);
+                mapStartWatch();
+            }).catch(() => {
+                loading.innerHTML = '🗺️ 地圖需要網路連線才能載入。<br>請連上網路後再切換到地圖，或先使用清單模式。';
+            });
+        }
+
+        function initMap() {
+            if (mapObj) return;
+            mapObj = L.map('mapCanvas', { zoomControl: true, attributionControl: true }).setView([HOME_LAT, HOME_LNG], 16);
+            // CARTO 底圖（OpenStreetMap 資料）：免費、免 key，直接開本機檔案也能顯示
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                subdomains: 'abcd', maxZoom: 20,
+                attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'
+            }).addTo(mapObj);
+            // 家與生活圈範圍
+            [600, 1200, 2000].forEach(r => {
+                L.circle([HOME_LAT, HOME_LNG], { radius: r, color: '#f97316', weight: 1.5, opacity: 0.7, dashArray: '5 6', fill: false, interactive: false }).addTo(mapObj);
+                L.marker([HOME_LAT + r / 111320, HOME_LNG], { interactive: false, icon: L.divIcon({ className: '', html: `<span class="map-ring-label">${r >= 1000 ? (r / 1000) + 'km' : r + 'm'}</span>`, iconSize: [0, 0] }) }).addTo(mapObj);
+            });
+            L.marker([HOME_LAT, HOME_LNG], { zIndexOffset: 900, title: '家', icon: L.divIcon({ className: '', html: '<div class="map-home">🏠</div>', iconSize: [28, 28], iconAnchor: [14, 14] }) }).addTo(mapObj);
+            mapCluster = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 45, disableClusteringAtZoom: 18, spiderfyOnMaxZoom: true, chunkedLoading: true });
+            mapObj.addLayer(mapCluster);
+            mapObj.on('click', hideMapCard);
+            document.getElementById('mapLegendList').innerHTML = Object.entries(MAP_CAT_COLORS)
+                .map(([c, col]) => `<div class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full border border-white shadow" style="background:${col}"></span>${c}</div>`).join('') +
+                '<div class="flex items-center gap-1.5">⭐ 我的最愛</div><div class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full bg-slate-300" style="outline:2px solid #0f172a"></span>已加入轉盤</div><div class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full bg-blue-600 border-2 border-white shadow"></span>目前位置</div>';
+        }
+
+        function mapIconFor(r) {
+            const sel = selectedIds.has(r.id) ? ' sel' : '';
+            const html = isFav(r)
+                ? `<div class="map-pin fav${sel}">⭐</div>`
+                : `<div class="map-pin${sel}" style="background:${MAP_CAT_COLORS[r.category] || '#94a3b8'}"></div>`;
+            return L.divIcon({ className: '', html, iconSize: [20, 20], iconAnchor: [10, 10] });
+        }
+
+        function scheduleMapUpdate() {
+            if (viewMode !== 'map' || !mapObj) return;
+            clearTimeout(mapUpdateTimer);
+            mapUpdateTimer = setTimeout(() => updateMapMarkers(false), 60);
+        }
+
+        function updateMapMarkers(forceFit) {
+            if (!mapObj) return;
+            const list = getFilteredRestaurants().filter(r => Number.isFinite(r.lat) && Number.isFinite(r.lng));
+            const ids = new Set(list.map(r => r.id));
+            const same = ids.size === mapMarkers.size && [...ids].every(id => mapMarkers.has(id));
+            if (same) {
+                list.forEach(r => mapMarkers.get(r.id).setIcon(mapIconFor(r)));   // 只更新樣式（最愛／轉盤）
+            } else {
+                mapCluster.clearLayers();
+                mapMarkers.clear();
+                const markers = list.map(r => {
+                    const m = L.marker([r.lat, r.lng], { icon: mapIconFor(r), title: r.name });
+                    m.on('click', e => { L.DomEvent.stopPropagation(e); showMapCard(r.id); });
+                    mapMarkers.set(r.id, m);
+                    return m;
+                });
+                mapCluster.addLayers(markers);
+            }
+            document.getElementById('mapCountLabel').textContent = `地圖顯示 ${list.length} 家`;
+            const d = committedFilters.distance;
+            if (forceFit || d !== mapLastDistance) {
+                mapLastDistance = d;
+                const radius = parseInt(d, 10) || 10000;
+                mapObj.fitBounds(L.latLng(HOME_LAT, HOME_LNG).toBounds(radius * 2), { padding: [12, 12] });
+            }
+            if (mapCardId) { if (ids.has(mapCardId)) showMapCard(mapCardId); else hideMapCard(); }
+        }
+
+        function mapRefreshMarker(id) {
+            const r = restaurants.find(x => x.id === id);
+            const m = mapMarkers.get(id);
+            if (r && m) m.setIcon(mapIconFor(r));
+        }
+
+        function showMapCard(id) {
+            const r = restaurants.find(x => x.id === id);
+            if (!r) return;
+            mapCardId = id;
+            const color = MAP_CAT_COLORS[r.category] || '#94a3b8';
+            const fav = isFav(r), inWheel = selectedIds.has(r.id);
+            const status = `<span class="${r.isOpen ? 'text-emerald-600' : 'text-slate-400'} font-semibold">${escHtml(r.statusText || (r.isOpen ? '營業中' : '休息中'))}</span>`;
+            const card = document.getElementById('mapCard');
+            card.innerHTML = `
+                <div class="flex items-start justify-between gap-2">
+                    <div class="min-w-0">
+                        <div class="font-black text-sm text-slate-900 truncate">${escHtml(r.name)}</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5 truncate"><span style="color:${color}">●</span> ${escHtml(r.subCategory || r.category || '')} · ${formatDistance(r.distance)} · ⭐ ${r.rating != null ? r.rating : '-'}${r.avgPrice ? ' · 均消 $' + r.avgPrice : ''}</div>
+                        <div class="text-[11px] mt-0.5 truncate">${status}</div>
+                    </div>
+                    <button type="button" onclick="hideMapCard()" class="shrink-0 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center cursor-pointer"><i class="fa-solid fa-xmark text-xs"></i></button>
+                </div>
+                <div class="grid grid-cols-3 gap-2 mt-2.5 text-xs font-bold">
+                    <button type="button" onclick="openMenuModal('${r.id}')" class="py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">店家介紹</button>
+                    <button type="button" onclick="mapToggleFav('${r.id}')" class="py-2 rounded-xl cursor-pointer ${fav ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-amber-50 text-amber-700 border border-amber-200'}">${fav ? '⭐ 已最愛' : '☆ 加最愛'}</button>
+                    <button type="button" onclick="mapToggleWheel('${r.id}')" class="py-2 rounded-xl cursor-pointer ${inWheel ? 'bg-slate-800 text-white' : 'bg-gradient-to-r from-orange-500 to-amber-500 text-white'}">${inWheel ? '－ 移出轉盤' : '＋ 加入轉盤'}</button>
+                </div>`;
+            card.classList.remove('hidden');
+        }
+        function hideMapCard() { mapCardId = null; const c = document.getElementById('mapCard'); if (c) c.classList.add('hidden'); }
+
+        function mapToggleWheel(id) {
+            const r = restaurants.find(x => x.id === id);
+            if (!r) return;
+            const adding = !selectedIds.has(id);
+            toggleSelect(id);   // 共用清單的勾選（候選轉盤）
+            mapRefreshMarker(id);
+            showMapCard(id);
+            showToast(adding ? `已加入轉盤：${r.name}（目前 ${getSelectedList().length} 家）` : `已移出轉盤：${r.name}`);
+        }
+        function mapToggleFav(id) {
+            toggleFav(id);
+            mapRefreshMarker(id);
+            showMapCard(id);
+        }
+
+        // ---------- 目前位置 ----------
+        function mapStartWatch() {
+            if (!navigator.geolocation || mapWatchId !== null || !mapObj) return;
+            mapWatchId = navigator.geolocation.watchPosition(pos => {
+                const ll = [pos.coords.latitude, pos.coords.longitude];
+                mapUserPos = ll;
+                if (!mapUserMarker) {
+                    mapUserCircle = L.circle(ll, { radius: pos.coords.accuracy || 30, color: '#3b82f6', weight: 1, fillColor: '#3b82f6', fillOpacity: 0.12, interactive: false }).addTo(mapObj);
+                    mapUserMarker = L.marker(ll, { interactive: false, zIndexOffset: 1000, icon: L.divIcon({ className: '', html: '<div class="map-user"></div>', iconSize: [16, 16], iconAnchor: [8, 8] }) }).addTo(mapObj);
+                } else {
+                    mapUserMarker.setLatLng(ll);
+                    mapUserCircle.setLatLng(ll).setRadius(pos.coords.accuracy || 30);
+                }
+                if (mapPendingLocate) { mapPendingLocate = false; mapObj.setView(ll, 17); }
+            }, err => {
+                if (mapPendingLocate) {
+                    mapPendingLocate = false;
+                    showToast(err && err.code === 1 ? '無法取得位置：請在瀏覽器設定允許此網站使用定位' : '目前無法取得位置，請稍後再試');
+                }
+                mapStopWatch();
+            }, { enableHighAccuracy: true, maximumAge: 15000, timeout: 20000 });
+        }
+        function mapStopWatch() {
+            if (mapWatchId !== null && navigator.geolocation) navigator.geolocation.clearWatch(mapWatchId);
+            mapWatchId = null;
+        }
+        function mapLocateMe() {
+            if (!mapObj) return;
+            if (!navigator.geolocation) { showToast('這個裝置不支援定位'); return; }
+            if (mapUserPos && mapWatchId !== null) { mapObj.setView(mapUserPos, 17); return; }
+            mapPendingLocate = true;
+            showToast('正在取得目前位置…');
+            mapStartWatch();
+        }
+        function mapGoHome() {
+            if (!mapObj) return;
+            const radius = parseInt(committedFilters.distance, 10) || 10000;
+            mapObj.fitBounds(L.latLng(HOME_LAT, HOME_LNG).toBounds(radius * 2), { padding: [12, 12] });
+        }
+
         // 初始化
         window.addEventListener('DOMContentLoaded', async () => {
             try {
@@ -3263,6 +3531,7 @@
             // 將校正後之最新資料寫回 localStorage
             persistRestaurants();
             initFavorites();
+            try { if (localStorage.getItem('DINNER_VIEW_MODE') === 'map') setTimeout(() => setViewMode('map'), 0); } catch (e) {}
 
             renderCategoryChips();
             applyFilters();

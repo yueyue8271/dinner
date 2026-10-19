@@ -1,6 +1,6 @@
 // 晚餐轉盤離線快取（Service Worker）
 // 網頁：先抓最新版（4 秒內沒回應就用快取）；樣式與字型等 CDN 檔案：先用快取、背景更新
-const CACHE = 'dinner-v1';
+const CACHE = 'dinner-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 const CDN_PRECACHE = [
     'https://cdn.tailwindcss.com',
