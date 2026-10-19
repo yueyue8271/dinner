@@ -3304,6 +3304,7 @@
             loading.classList.remove('hidden');
             loading.textContent = '地圖載入中…';
             loadLeaflet().then(() => {
+                if (viewMode !== 'map') return;   // 載入期間已切回清單
                 initMap();
                 loading.classList.add('hidden');
                 mapObj.invalidateSize();
@@ -3407,12 +3408,13 @@
             const ids = new Set(list.map(r => r.id));
             const same = ids.size === mapMarkers.size && [...ids].every(id => mapMarkers.has(id));
             if (same) {
-                list.forEach(r => mapMarkers.get(r.id).setIcon(mapIconFor(r)));   // 只更新樣式（最愛／轉盤）
+                list.forEach(r => mapSyncIcon(r, mapMarkers.get(r.id)));   // 只更新樣式有變的（最愛／轉盤）
             } else {
                 mapCluster.clearLayers();
                 mapMarkers.clear();
                 const markers = list.map(r => {
                     const m = L.marker([r.lat, r.lng], { icon: mapIconFor(r), title: r.name });
+                    m._dinnerKey = mapIconKey(r);
                     m.on('click', e => { L.DomEvent.stopPropagation(e); showMapCard(r.id); });
                     mapMarkers.set(r.id, m);
                     return m;
@@ -3432,7 +3434,12 @@
         function mapRefreshMarker(id) {
             const r = restaurants.find(x => x.id === id);
             const m = mapMarkers.get(id);
-            if (r && m) m.setIcon(mapIconFor(r));
+            if (r && m) mapSyncIcon(r, m);
+        }
+        function mapIconKey(r) { return (isFav(r) ? 'f' : 'c') + (selectedIds.has(r.id) ? 's' : ''); }
+        function mapSyncIcon(r, m) {
+            const k = mapIconKey(r);
+            if (m._dinnerKey !== k) { m._dinnerKey = k; m.setIcon(mapIconFor(r)); }
         }
 
         function showMapCard(id) {
@@ -3510,6 +3517,11 @@
             showToast('正在取得目前位置…');
             mapStartWatch();
         }
+        // 切到背景（鎖螢幕、換 App）時暫停定位以省電，回來再繼續
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) mapStopWatch();
+            else if (viewMode === 'map' && mapObj) mapStartWatch();
+        });
         function mapGoHome() {
             if (!mapObj) return;
             const radius = parseInt(committedFilters.distance, 10) || 10000;
