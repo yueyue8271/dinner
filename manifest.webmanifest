@@ -1,0 +1,32 @@
+{
+ "name": "晚餐吃什麼？周邊餐廳轉盤",
+ "short_name": "晚餐轉盤",
+ "description": "新竹經國路周邊餐廳篩選與命運轉盤",
+ "lang": "zh-TW",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#fff7ed",
+ "theme_color": "#f97316",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
